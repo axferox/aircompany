@@ -36,14 +36,15 @@ class Airport {
 
     getTransportMilitaryPlanes() {
         const getTransportMilitaryPlanes = this.planes.filter(plane => {
-            return plane.militaryType == militaryType.transport;
+            return plane.militaryType === militaryType.transport;
         })
+        // console.log(getTransportMilitaryPlanes)
         return getTransportMilitaryPlanes;
     }
 
     getBomberMilitaryPlanes() {
         const getBomberMilitaryPlanes = this.planes.filter(plane => {
-            return plane.militaryType == militaryType.bomber;
+            return plane.militaryType === militaryType.bomber;
         })
         return getBomberMilitaryPlanes;
     }
@@ -57,7 +58,7 @@ class Airport {
 
     sortByMaxLoadCapacity() {
         const sortByMaxLoadCapacity = this.planes.sort((a, b) => (a.maxLoadCapacity - b.maxLoadCapacity));
-        return console.log(sortByMaxLoadCapacity);
+        return sortByMaxLoadCapacity;
     }
 }
 module.exports = Airport;

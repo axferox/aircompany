@@ -29,63 +29,38 @@ describe('airport-smoke-test.js', () => {
         new experimentalPlane("Bell X-14", 277, 482, 500, experimentalTypes.altitude_limit, classificationLevel.secret),
         new experimentalPlane("Ryan X-13 Vertijet", 560, 307, 500, experimentalTypes.take_off_type, classificationLevel.top_secret)
     ];
-    let planeWithMaxPassengerCapacity = new PassengerPlane('Boeing-747', 980, 16100, 70500, 242);
 
-    it('should check is there are military Planes with transport type', () => {
-        const airport = new Airport(planes);
-        const transportMilitaryPlanes = airport.getTransportMilitaryPlanes();
-        let flag = false;
-        for (let militaryPlane of transportMilitaryPlanes) {
-            if (militaryPlane.getMilitaryType() === militaryType.transport) {
-                flag = true;
-                break;
-            }
+    it('Should check that at least one military transport plane is present', () => {
+        if (new Airport(planes).getTransportMilitaryPlanes().length) {
+            return true;
         }
-        assert.equal(flag, true);
+        assert.isTrue();
     });
 
-    it('should check passenger plane with max capacity', () => {
-        let airport = new Airport(planes);
-        let expectedPlaneWithMaxPassengersCapacity = airport.getPassengerPlaneWithMaxPassengersCapacity();
-        assert.isFalse(expectedPlaneWithMaxPassengersCapacity == planeWithMaxPassengerCapacity);
+    
+    it('Should check passenger plane with requested capacity is present', () => {
+        const requestedPassengerPlane = JSON.stringify(new PassengerPlane('Boeing-747', 980, 16100, 70500, 242));
+        const actualPassengerPlaneGrid = JSON.stringify(new Airport(planes).getPassengerPlaneWithMaxPassengersCapacity());
+        assert.isTrue(actualPassengerPlaneGrid === requestedPassengerPlane);
     });
 
 
-    it('test 3', () => {
-        console.log("TEST testGetPassengerPlaneWithMaxCapacity started!");
-        let airport = new Airport(planes);
-        airport.sortByMaxLoadCapacity();
-        let planesSortedByMaxLoadCapacity = airport.getPlanes();
-        let nextPlaneMaxLoadCapacityIsHigherThanCurrent = true;
-        for (let i = 0; i < planesSortedByMaxLoadCapacity.length - 1; i++) {
-            let currentPlane = planesSortedByMaxLoadCapacity[i];
-            let nextPlane = planesSortedByMaxLoadCapacity[i + 1];
-            if (currentPlane.getLoadCapacity() > nextPlane.getLoadCapacity()) {
-                nextPlaneMaxLoadCapacityIsHigherThanCurrent = false;
-                break;
-            }
-        }
-        assert.isTrue(nextPlaneMaxLoadCapacityIsHigherThanCurrent);
+    it('Should check passenger plane with max capacity', () => {
+        if(new Airport(planes).getPassengerPlaneWithMaxPassengersCapacity()){
+            return true;
+        }; 
+        assert.isTrue();
     })
 
-    it('testHasAtLeastOneBomberInMilitaryPlanes', () => {
-        let airport = new Airport(planes);
-        let bomberMilitaryPlanes = airport.getBomberMilitaryPlanes();
-        let flag = false;
-        for (let militaryPlane of bomberMilitaryPlanes) {
-            if (militaryPlane.getMilitaryType() === militaryType.bomber) {
-                flag = true;
-            } else {
-                assert.fail("Test failed!");
-            }
+    it('Should check that at least one militaly bomber is present', () => {
+        if (new Airport(planes).getBomberMilitaryPlanes().length) {
+            return true;
         }
+        assert.isTrue();
+    });
 
-        // if not failed;
-    })
-
-    it('should check that experimentsl planes has classification level higher than unclassified', () => {
-        let airport = new Airport(planes);
-        let bomberMilitaryPlanes = airport.getExperimentalPlanes();
+    it('Should check that experimental planes has classification level higher than unclassified', () => {
+        let bomberMilitaryPlanes = new Airport(planes).getExperimentalPlanes();
         let hasUnclassifiedPlanes = false;
         for (let experimentalPlane of bomberMilitaryPlanes) {
             if (experimentalPlane.classificationLevel === classificationLevel.UNCLASSIFIED) {
