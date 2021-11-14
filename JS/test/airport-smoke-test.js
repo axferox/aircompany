@@ -37,7 +37,7 @@ describe('airport-smoke-test.js', () => {
         assert.isTrue();
     });
 
-    
+
     it('Should check passenger plane with requested capacity is present', () => {
         const requestedPassengerPlane = JSON.stringify(new PassengerPlane('Boeing-747', 980, 16100, 70500, 242));
         const actualPassengerPlaneGrid = JSON.stringify(new Airport(planes).getPassengerPlaneWithMaxPassengersCapacity());
@@ -46,30 +46,25 @@ describe('airport-smoke-test.js', () => {
 
 
     it('Should check passenger plane with max capacity', () => {
-        if(new Airport(planes).getPassengerPlaneWithMaxPassengersCapacity()){
+        if (new Airport(planes).getPassengerPlaneWithMaxPassengersCapacity()) {
             return true;
-        }; 
+        };
         assert.isTrue();
     })
 
-    it('Should check that at least one militaly bomber is present', () => {
+    it('Should check that at least one militaly bomber is present ', () => {
         if (new Airport(planes).getBomberMilitaryPlanes().length) {
             return true;
-        }
+        };
         assert.isTrue();
     });
 
     it('Should check that experimental planes has classification level higher than unclassified', () => {
-        let bomberMilitaryPlanes = new Airport(planes).getExperimentalPlanes();
-        let hasUnclassifiedPlanes = false;
-        for (let experimentalPlane of bomberMilitaryPlanes) {
-            if (experimentalPlane.classificationLevel === classificationLevel.UNCLASSIFIED) {
-                hasUnclassifiedPlanes = true;
-
-            }
-            assert.isFalse(hasUnclassifiedPlanes);
-
+        if (new Airport(planes).getExperimentalPlanes().filter(plane => {
+                plane.classificationLevel === classificationLevel.unclassified;
+            })) {
+            return true
         }
+        assert.isFalse();
     });
-
 });
